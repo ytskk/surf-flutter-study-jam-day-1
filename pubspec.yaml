@@ -11,7 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  surf_study_jam: ^0.1.0
+  _atom735_surf_study_jam: 0.0.1-pre.7
+
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

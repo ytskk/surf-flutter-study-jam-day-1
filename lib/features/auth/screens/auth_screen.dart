@@ -3,7 +3,7 @@ import 'package:surf_practice_chat_flutter/features/auth/models/token_dto.dart';
 import 'package:surf_practice_chat_flutter/features/auth/repository/auth_repository.dart';
 import 'package:surf_practice_chat_flutter/features/chat/repository/chat_repository.dart';
 import 'package:surf_practice_chat_flutter/features/chat/screens/chat_screen.dart';
-import 'package:surf_study_jam/surf_study_jam.dart';
+import 'package:_atom735_surf_study_jam/surf_study_jam.dart';
 
 /// Screen for authorization process.
 ///

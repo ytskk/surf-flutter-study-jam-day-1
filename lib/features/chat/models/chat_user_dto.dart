@@ -1,4 +1,4 @@
-import 'package:surf_study_jam/surf_study_jam.dart';
+import 'package:_atom735_surf_study_jam/surf_study_jam.dart';
 
 /// Basic model, representing chat user.
 class ChatUserDto {
