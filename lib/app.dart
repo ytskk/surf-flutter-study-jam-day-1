@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +42,14 @@ class AppView extends StatelessWidget {
             return const LoginScreen();
           }
           if (state.status == AuthStatus.authenticated) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(
-                child: Text('auth'),
+                child: CupertinoButton(
+                  child: Text('logout'),
+                  onPressed: () {
+                    context.read<AuthBloc>().add(AuthLogoutRequested());
+                  },
+                ),
               ),
             );
           }

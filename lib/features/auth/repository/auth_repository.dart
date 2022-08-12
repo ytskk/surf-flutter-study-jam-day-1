@@ -43,7 +43,9 @@ class AuthRepository {
     }
   }
 
-  Future<void> signOut() {
-    return _studyJamClient.logout();
+  Future<void> signOut() async {
+    await _localDB.clearUserToken();
+
+    // return _studyJamClient.logout();
   }
 }

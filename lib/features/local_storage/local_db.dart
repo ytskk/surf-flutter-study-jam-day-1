@@ -22,4 +22,13 @@ class LocalDB {
 
     return success;
   }
+
+  // methods.
+  Future<bool> clearUserToken() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final success = await prefs.remove('token');
+
+    return success;
+  }
 }

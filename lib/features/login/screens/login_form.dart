@@ -23,7 +23,11 @@ class LoginForm extends StatelessWidget {
           return;
         }
 
-        // if (state.status.isSubmissionSuccess) {}
+        if (state.status.isSubmissionSuccess) {
+          context
+              .read<AuthBloc>()
+              .add(const AuthStatusChanged(AuthStatus.authenticated));
+        }
       },
       child: Padding(
         padding: const EdgeInsets.all(32.0),
