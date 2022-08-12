@@ -103,6 +103,11 @@ class _ChatBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (messages.isEmpty) {
+      return const Center(
+        child: Text('No messages yet'),
+      );
+    }
     return ListView.builder(
       itemCount: messages.length,
       itemBuilder: (_, index) {

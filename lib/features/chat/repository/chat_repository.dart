@@ -146,6 +146,10 @@ class ChatRepository implements IChatRepository {
         limit: 10000,
       );
       messages.addAll(batch);
+      // BUG fix: if there's no messages, we can't get last message id.)
+      if (batch.isEmpty) {
+        return [];
+      }
       lastMessageId = batch.last.chatId;
       if (batch.length < 10000) {
         isLimitBroken = true;

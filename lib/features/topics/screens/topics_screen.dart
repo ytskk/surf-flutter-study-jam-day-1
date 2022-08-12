@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surf_practice_chat_flutter/features/auth/auth.dart';
 import 'package:surf_practice_chat_flutter/features/auth/repository/auth_repository.dart';
-import 'package:surf_practice_chat_flutter/features/chat/cubit/chat/chat_cubit.dart';
 import 'package:surf_practice_chat_flutter/features/chat/screens/chat_screen.dart';
 import 'package:surf_practice_chat_flutter/features/topics/models/chat_topic_dto.dart';
-import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
 import 'package:surf_practice_chat_flutter/features/topics/repository/chat_topics_repository.dart';
+import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
 
 /// Screen with different chat topics to go to.
 class TopicsScreen extends StatelessWidget {
@@ -71,59 +70,8 @@ class _TopicsLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(
-        leading: CupertinoButton(
-          child: const Icon(Icons.logout),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Column(
-                    children: [
-                      Text(
-                        'Are you sure you want to logout?',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'You will be logged out of the app.',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          color:
-                              theme.colorScheme.onBackground.withOpacity(0.7),
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    CupertinoButton(
-                      child: const Text('Yes'),
-                      onPressed: () {
-                        context.read<AuthBloc>().add(AuthLogoutRequested());
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    CupertinoButton(
-                      child: const Text('No'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-        title: const Text('Topics'),
-      ),
+      appBar: _TopicsAppBar(context: context),
       body: ListView.builder(
         itemCount: topics.length,
         itemBuilder: (BuildContext context, int index) {
@@ -183,4 +131,86 @@ class _TopicsLoadFailure extends StatelessWidget {
       child: Text('Ук'),
     );
   }
+}
+
+class _TopicsAppBar extends StatelessWidget with PreferredSizeWidget {
+  const _TopicsAppBar({
+    Key? key,
+    required this.context,
+  }) : super(key: key);
+
+  final BuildContext context;
+
+  static const double appBarHeight = 48.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return AppBar(
+      leading: CupertinoButton(
+        child: const Icon(Icons.logout),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Column(
+                  children: [
+                    Text(
+                      'Are you sure you want to logout?',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'You will be logged out of the app.',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyLarge!.copyWith(
+                        color: theme.colorScheme.onBackground.withOpacity(0.7),
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  CupertinoButton(
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      context.read<AuthBloc>().add(AuthLogoutRequested());
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  CupertinoButton(
+                    child: const Text('No'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+      title: const Text('Topics'),
+      actions: [
+        CupertinoButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            log('repo: ${context.read<IChatTopicsRepository>()}');
+            Navigator.of(context).push(
+              CupertinoPageRoute(builder: (BuildContext context) {
+                return CreateTopicScreen(context);
+              }),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(appBarHeight);
 }
