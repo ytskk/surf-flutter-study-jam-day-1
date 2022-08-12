@@ -13,6 +13,14 @@ class TokenDto {
     required this.token,
   });
 
+  const TokenDto.empty() : this(token: '');
+
+  factory TokenDto.fromJson(Map<String, dynamic> json) {
+    return TokenDto(
+      token: json['token'] as String,
+    );
+  }
+
   @override
   String toString() {
     return 'TokenDto(token: $token)';

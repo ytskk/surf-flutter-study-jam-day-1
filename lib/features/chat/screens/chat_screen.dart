@@ -15,6 +15,12 @@ class ChatScreen extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+  static Route<void> route(IChatRepository chatRepository) {
+    return MaterialPageRoute<void>(
+      builder: (_) => ChatScreen(chatRepository: chatRepository),
+    );
+  }
+
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -168,7 +174,9 @@ class _ChatMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: chatData.chatUserDto is ChatUserLocalDto ? colorScheme.primary.withOpacity(.1) : null,
+      color: chatData.chatUserDto is ChatUserLocalDto
+          ? colorScheme.primary.withOpacity(.1)
+          : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 18,

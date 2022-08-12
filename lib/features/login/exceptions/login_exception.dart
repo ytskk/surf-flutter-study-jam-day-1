@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 
 /// Exception, that occurs in authorization process.
 @immutable
-class AuthException implements Exception {
+class LoginException implements Exception {
   /// Message, describing exception's explanation.
   final String message;
 
-  /// Constructor for [AuthException].
-  const AuthException(this.message);
+  /// Constructor for [LoginException].
+  const LoginException(this.message);
 
   @override
   String toString() => 'AuthException(message: $message)';

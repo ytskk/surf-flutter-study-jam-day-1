@@ -1,54 +1,48 @@
-import 'package:surf_practice_chat_flutter/features/auth/exceptions/auth_exception.dart';
-import 'package:surf_practice_chat_flutter/features/auth/models/token_dto.dart';
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:surf_practice_chat_flutter/features/features.dart';
 import 'package:surf_study_jam/surf_study_jam.dart';
 
-/// Basic interface of authorization logic.
-///
-/// Has 2 methods: [signIn] & [signOut].
-abstract class IAuthRepository {
-  /// Signs the user in via [login] & [password].
-  ///
-  /// [login] is a `String` representation of login,
-  /// that was used in registration.
-  ///
-  /// [password] is a `String` representation of a password,
-  /// that was used in registration.
-  ///
-  /// [TokenDto] is a model, containing its' value, that should be
-  /// retrieved in the end of authorization process.
-  ///
-  /// May throw an [AuthException].
-  Future<TokenDto> signIn({
-    required String login,
-    required String password,
-  });
+class AuthRepository {
+  AuthRepository(this._localDB);
 
-  /// Signs the user out, clearing all unneeded credentials.
-  Future<void> signOut();
-}
+  final _controller = StreamController<AuthStatus>();
+  User? _user;
+  final LocalDB _localDB;
+  // TODO: DI
+  final _studyJamClient = StudyJamClient();
 
-/// Simple implementation of [IAuthRepository], using [StudyJamClient].
-class AuthRepository implements IAuthRepository {
-  final StudyJamClient _studyJamClient;
+  Future<User?> getUser() async {
+    if (_user != null) {
+      return _user!;
+    }
 
-  /// Constructor for [AuthRepository].
-  AuthRepository(this._studyJamClient);
+    final String? userToken = await _localDB.getUserToken();
+    if (userToken != null) {
+      _user = User.fromTokenString(userToken);
+      // TODO: replace with get user, not just token.
+      return _user!;
+    }
 
-  @override
+    return null;
+  }
+
   Future<TokenDto> signIn({
     required String login,
     required String password,
   }) async {
     try {
       final token = await _studyJamClient.signin(login, password);
+      _localDB.setUserToken(token);
+      _controller.add(AuthStatus.authenticated);
 
       return TokenDto(token: token);
     } on Exception catch (e) {
-      throw AuthException(e.toString());
+      throw LoginException(e.toString());
     }
   }
 
-  @override
   Future<void> signOut() {
     return _studyJamClient.logout();
   }
