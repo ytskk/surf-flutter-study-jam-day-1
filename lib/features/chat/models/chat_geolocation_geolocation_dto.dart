@@ -1,4 +1,4 @@
-import 'package:_atom735_surf_study_jam/surf_study_jam.dart';
+import 'package:surf_study_jam/surf_study_jam.dart';
 
 /// Data transfer object representing geolocation point.
 class ChatGeolocationDto {

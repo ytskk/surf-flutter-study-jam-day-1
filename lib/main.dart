@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/features/auth/repository/auth_repository.dart';
 import 'package:surf_practice_chat_flutter/features/auth/screens/auth_screen.dart';
-import 'package:_atom735_surf_study_jam/surf_study_jam.dart';
+import 'package:surf_study_jam/surf_study_jam.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

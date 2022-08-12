@@ -1,4 +1,4 @@
-import 'package:_atom735_surf_study_jam/surf_study_jam.dart';
+import 'package:surf_study_jam/surf_study_jam.dart';
 import 'package:surf_practice_chat_flutter/features/topics/models/chat_topic_dto.dart';
 
 /// Data transfer object representing simple chat topic.
