@@ -11,7 +11,7 @@ class AuthRepository {
   User? _user;
   final LocalDB _localDB;
   // TODO: DI
-  final _studyJamClient = StudyJamClient();
+  StudyJamClient _studyJamClient = StudyJamClient();
 
   Future<User?> getUser() async {
     if (_user != null) {
@@ -36,6 +36,8 @@ class AuthRepository {
       final token = await _studyJamClient.signin(login, password);
       _localDB.setUserToken(token);
       _controller.add(AuthStatus.authenticated);
+      log('token: $token', name: 'AuthRepository::signIn');
+      _studyJamClient = _studyJamClient.getAuthorizedClient(token);
 
       return TokenDto(token: token);
     } on Exception catch (e) {
@@ -46,6 +48,6 @@ class AuthRepository {
   Future<void> signOut() async {
     await _localDB.clearUserToken();
 
-    // return _studyJamClient.logout();
+    return _studyJamClient.logout();
   }
 }
