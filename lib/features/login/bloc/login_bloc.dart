@@ -61,12 +61,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ),
       );
       try {
-        final TokenDto token = await _authRepository.signIn(
+        await _authRepository.signIn(
           login: state.username.value,
           password: state.password.value,
         );
-
-        // TODO: save token.
 
         emit(
           state.copyWith(

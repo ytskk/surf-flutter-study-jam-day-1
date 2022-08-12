@@ -7,7 +7,6 @@ import 'package:surf_study_jam/surf_study_jam.dart';
 class AuthRepository {
   AuthRepository(this._localDB);
 
-  final _controller = StreamController<AuthStatus>();
   User? _user;
   final LocalDB _localDB;
   // TODO: DI
@@ -22,6 +21,7 @@ class AuthRepository {
     if (userToken != null) {
       _user = User.fromTokenString(userToken);
       // TODO: replace with get user, not just token.
+      _studyJamClient = _studyJamClient.getAuthorizedClient(_user!.token.token);
       return _user!;
     }
 
@@ -35,9 +35,7 @@ class AuthRepository {
     try {
       final token = await _studyJamClient.signin(login, password);
       _localDB.setUserToken(token);
-      _controller.add(AuthStatus.authenticated);
-      log('token: $token', name: 'AuthRepository::signIn');
-      _studyJamClient = _studyJamClient.getAuthorizedClient(token);
+      // _studyJamClient = _studyJamClient.getAuthorizedClient(token);
 
       return TokenDto(token: token);
     } on Exception catch (e) {
@@ -48,6 +46,10 @@ class AuthRepository {
   Future<void> signOut() async {
     await _localDB.clearUserToken();
 
-    return _studyJamClient.logout();
+    log('sign out', name: 'AuthRepository::signOut');
+    return authorizedStudyJamClient.logout();
   }
+
+  StudyJamClient get authorizedStudyJamClient =>
+      _studyJamClient.getAuthorizedClient(_user!.token.token);
 }

@@ -26,20 +26,4 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
-
-  /// Pass [token] and navigate to [ChatScreen].
-  void _pushToChat(BuildContext context, TokenDto token) {
-    Navigator.push<ChatScreen>(
-      context,
-      MaterialPageRoute(
-        builder: (_) {
-          return ChatScreen(
-            chatRepository: ChatRepository(
-              StudyJamClient().getAuthorizedClient(token.token),
-            ),
-          );
-        },
-      ),
-    );
-  }
 }

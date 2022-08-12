@@ -11,6 +11,8 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status.isSubmissionFailure) {
@@ -34,6 +36,24 @@ class LoginForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(
+              'Surf Flutter Summer Chat',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleLarge!.copyWith(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'To register, go to the registration screen.',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleLarge!.copyWith(
+                fontSize: 17,
+                color: theme.colorScheme.onBackground.withOpacity(0.7),
+              ),
+            ),
+            const SizedBox(height: 64.0),
             ValidatingTextField(
               placeholder: 'Login',
               buildWhen: (prev, curr) => prev.username != curr.username,
@@ -88,6 +108,8 @@ class _LoginButtonState extends State<_LoginButton> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) async {
         if (state.status.isSubmissionFailure) {
@@ -109,7 +131,10 @@ class _LoginButtonState extends State<_LoginButton> {
                   context.read<LoginBloc>().add(const LoginSubmitted());
                 }
               : null,
-          child: const Text('Login'),
+          child: Text('Login',
+              style: TextStyle(
+                color: theme.colorScheme.onPrimary,
+              )),
         );
       },
     );

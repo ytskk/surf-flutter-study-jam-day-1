@@ -42,19 +42,10 @@ class AppView extends StatelessWidget {
             return const LoginScreen();
           }
           if (state.status == AuthStatus.authenticated) {
-            return Scaffold(
-              body: Center(
-                child: CupertinoButton(
-                  child: Text('logout'),
-                  onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogoutRequested());
-                  },
-                ),
-              ),
-            );
+            return const TopicsScreen();
           }
 
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
